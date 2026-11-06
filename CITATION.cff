@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this artifact, please cite the paper."
+title: "An External Brake? Retrieved Evidence Against False Notes and False Peers in Local LLMs"
+authors:
+  - family-names: Adwant
+    given-names: Goutam
+type: software
+license: MIT

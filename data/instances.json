@@ -1,0 +1,6 @@
+{
+ "qwen/qwen3.6-35b-a3b": "icsc-qwen36",
+ "qwen3-coder-30b-a3b-instruct": "icsc-coder",
+ "gemma-4-31b-it-qat": "icsc-gemma",
+ "mistralai/mistral-small-3.2": "icsc-judge"
+}

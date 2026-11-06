@@ -1,0 +1,66 @@
+{
+  "artifact_sha256": "cce839fe63819758effd3620bdfb3fc9dafa5d858b7fcb37e06b814c827fff7a",
+  "attempts": [
+    {
+      "attempt": 1,
+      "exit_code": 0,
+      "log": "experiments/runs/reasoned_gold-scifact-s1-gemma-4-31b-it-qat/attempt-1.log",
+      "seconds": 1543.4
+    }
+  ],
+  "command": "python3 run_cell.py --method reasoned_gold --dataset scifact --seed 1 --model gemma-4-31b-it-qat --out experiments/runs/reasoned_gold-scifact-s1-gemma-4-31b-it-qat",
+  "config_sha256": "1b31bf62f63a154a42e451e9b6b5d85ac4451de40442f43fbc6eed2b7f37483d",
+  "dataset": "scifact",
+  "error": "",
+  "evaluator_id": "e_scifact",
+  "extra": {
+    "frames_sha256": "3f83353b5bf4864a7497865fd686d2d4108732167f71cd70edaae2e0596d9ce3  feasibility.jsonl\n66135490e6197d427f46de0c9de9b09072c6e7b78933a8d99abeab4dd0ebdee5  feasibility.rationales.jsonl\n1a675ab517d7045b89039c2ef0dcda2ccb093bcf7b87eeb942db8aa643a9f59c  feasibility.rationales.stats.json\ne1480b37f9d6c611f76f37d4e51bbd71cbfe332a32e041a557894f23a2eef8fe  fever.audit.jsonl\nbff2a559f912f36e4f6defe7e2e8dfbe906fdd69fbfe2f3c6ca4fba7e22b1fab  fever.jsonl\n62b41d41c9a187ad1116fe24b4f834878b8d2a116a5cfd53ba180a112d93d041  fever.rationales.jsonl\n95a841e6a81acef82d3b56d397161fb9bb21882160c7a1928bf30ad400ab822d  fever.rationales.stats.json\n9b912a07a01d295c014e50aa004aac8356a6263641a95bbcbece57e0b2809145  scifact.audit.jsonl\nb2eb62bfce2a3ab619c48f9dd9a4b24f6259103d744687340578a2eb14537a23  scifact.jsonl\n03fa145d59dffa9e02414f8ad4554d9cb7ae356be1f6925718aebba547316a69  scifact.rationales.jsonl\n0e55b80a78ff61515fb488e3509efdcf352be97f8439e0d981189e348855ef62  scifact.rationales.stats.json\n",
+    "predictions_sha256": "9e6c85bb745d7ec991a8187decea6c18bad4f845f98aa4e9077e3483e8a284a3",
+    "provenance": {
+      "host": "http://127.0.0.1:11435",
+      "instances": {
+        "gemma-4-31b-it-qat": {
+          "id": "icsc-gemma",
+          "loaded_context_length": 8192,
+          "state": "loaded"
+        }
+      },
+      "models": {
+        "gemma-4-31b-it-qat": {
+          "arch": "gemma4",
+          "compatibility_type": "gguf",
+          "loaded_context_length": null,
+          "max_context_length": 262144,
+          "quantization": "Q4_0",
+          "state": "not-loaded"
+        }
+      }
+    },
+    "temperature": 0.3
+  },
+  "finished_at": "2026-11-06T05:58:44+00:00",
+  "hardware": "MacBook-Pro.local",
+  "kind": "sensitivity",
+  "method": "reasoned_gold",
+  "metric_values": {
+    "acc_alone": 0.83,
+    "acc_false": 0.895,
+    "acc_false_text": 0.785,
+    "notes_drop": 0.04499999999999993,
+    "parse_failure_rate": 0.0,
+    "peer_drop": -0.06500000000000006
+  },
+  "model": "gemma-4-31b-it-qat",
+  "n": 200,
+  "out_dir": "experiments/runs/reasoned_gold-scifact-s1-gemma-4-31b-it-qat",
+  "outputs": [
+    "experiments/runs/reasoned_gold-scifact-s1-gemma-4-31b-it-qat/attempt-1.log",
+    "experiments/runs/reasoned_gold-scifact-s1-gemma-4-31b-it-qat/predictions.jsonl",
+    "experiments/runs/reasoned_gold-scifact-s1-gemma-4-31b-it-qat/result.json"
+  ],
+  "run_id": "reasoned_gold-scifact-s1-gemma-4-31b-it-qat",
+  "runner_sha256": "9f233825c6b09acd3efe3f4a087625f10abbb185c2442c6e801f04f1e3d1d667",
+  "seed": 1,
+  "started_at": "2026-11-06T05:33:01+00:00",
+  "status": "ok"
+}

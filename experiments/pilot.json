@@ -1,0 +1,15 @@
+{
+  "best_baseline_value": 0.335,
+  "decision": "FALLBACK",
+  "fallback_rationale": "headroom -0.1400 < 0.02; invoking protocol.positive_fallback: If evidence does not brake misinformation in a channel beyond added text, or brakes it only by also blocking true corrections, the paper reports a supported negative or an honest inconclusive, with harmful and beneficial accounting for true peers only (there is no true-notes arm, so nothing is said about corrections from true notes), the position and format controls, and the vote comparison, which extends \"One Axis, No Brake\" (which names external evidence as a route forward). A row whose floor or room rule fires carries that label and is never reported as a negative.",
+  "headroom": -0.14,
+  "method_value": 0.475,
+  "metric_id": "notes_drop",
+  "notes": "derived from 3 pilot runs on 2026-11-05T03:30:52+00:00",
+  "runs": [
+    "pilot-no_context-fever-s101-qwen3-coder-30b-a3b-instruct",
+    "pilot-retrieved-fever-s101-qwen3-coder-30b-a3b-instruct",
+    "pilot-distractor_retrieved-fever-s101-qwen3-coder-30b-a3b-instruct"
+  ],
+  "threshold": 0.02
+}

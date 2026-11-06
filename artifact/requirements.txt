@@ -1,0 +1,3 @@
+# The runner uses only the Python standard library. Analysis outputs were generated with CPython 3.9.6 and these versions.
+numpy==2.0.2
+matplotlib==3.9.4

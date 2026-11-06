@@ -1,0 +1,512 @@
+title: An External Brake? Retrieved Evidence Against False Notes and False Peers in Local LLMs (working title; the final title
+  follows the measured outcome at the claims stage)
+written_on: '2026-11-03'
+scope_statement: 'The paper measures, for three local open-weight models, whether evidence blocks reduce the accuracy lost
+  to false rationales on FEVER and SciFact claims, compared with no context and with a distractor block matched in length
+  and structure. It proposes no defense. Conclusions are limited to these prompts, models, block positions and response formats,
+  and to claims for which validated false rationales could be written: validation keeps 448 of 1200 FEVER claims and 392 of
+  693 SciFact claims, and those claims are harder for the models than the rejected ones (definitions.stimuli). A negative
+  result is worded as "on these prompts, evidence did not reduce the drop by more than the matched distractor"; the paper
+  makes no general statement that external evidence fails and no mechanism claim beyond the tested contrasts.'
+research_questions:
+- 'RQ1 (primary): for false rationales shown as unattributed notes and as three agents with the wrong label, does retrieved
+  evidence reduce the accuracy drop relative to no context (C1) and relative to a matched distractor (C2), and does gold evidence
+  reduce it relative to a gold-matched distractor (C3)?'
+- 'RQ2: do those contrasts depend on the model, on the position of the block, or on the response format, and does the answer
+  change when the comparison is limited to claims each model could answer alone under both blocks?'
+- 'RQ3: does the notes drop exceed the peer drop on fact-verification claims, as the speaker-free floor of Hu and Qu (2026)
+  leads one to expect (replication, not the contribution)?'
+- 'RQ4 (descriptive): among three real models with identical evidence access, how does majority accuracy differ between two
+  composite procedures, a reasoned first round voted independently and a one-word second round after seeing the other two
+  answers, with no context and with retrieved context? The rounds differ in format and token allowance and the second also
+  repeats the agent''s own answer, so a difference is not attributed to interaction; this row tests no effect of deliberation
+  as such.'
+definitions:
+  arms: 'alone (no misinformation), false (peers channel: "Three other agents answered before you:" with Agent A, B and C,
+    each stating the wrong label and one rationale), false_text (notes channel: "Notes on this claim:" with the same three
+    rationales, no speakers, no label), true (three agents with the right label, one rationale each), alone2 (a second independent
+    alone draw in no_context and retrieved only).'
+  contexts: no_context; retrieved (BM25 top pages then top 3 sentences from the FEVER Wikipedia dump or the SciFact abstract
+    corpus); distractor_retrieved (non-annotated sentences of the same retrieved pages outside the top 3, matched sentence
+    by sentence in word count to the retrieved block); gold (official evidence); distractor_gold (non-annotated sentences
+    of the gold source, matched sentence by sentence in word count to the gold block); instruction (no context, an independent-thinking
+    system prompt adapted from BenchForm).
+  stimuli: 'Rationales are written by qwen3.6 (temperature 0.7) from the claim and the label to argue, three slots per label.
+    A rationale is accepted when it holds no label word (true, false, untrue, truth, correct, incorrect, accurate, inaccurate),
+    no refusal phrase, no duplicate of its slot group, and a judge outside the study fleet (mistral-small-3.2, temperature
+    0), reading only the claim and the sentence, says it argues the intended label. A rejected rationale is redrawn with the
+    next attempt seed, at most six attempts. A claim with an unfilled slot leaves every arm and method. Counts per rule are
+    in frames/<dataset>.rationales.stats.json and go into the paper. Validation happens before the pilot and uses no study
+    outcome. The feasibility run was repeated on the validated stimuli. Measured yield: FEVER 448 of 1200 valid (19,017 drawn;
+    rejected 7,135 label word, 6,304 judge, 250 duplicate, 8 refusal; 1,880 slots unfilled); SciFact 392 of 693 (9,433 drawn;
+    rejected 1,586 label word, 4,364 judge, 19 duplicate, 3 refusal; 697 slots unfilled). Nearly all unfilled slots argue
+    against the official label, so validation selects: valid FEVER is 308 TRUE and 140 FALSE, valid SciFact 295 TRUE and 97
+    FALSE, and on the 100 feasibility claims no-context alone accuracy is 65 to 68% on the 40 valid claims and 93 to 98% on
+    the 60 rejected ones. The writer rarely argues against a claim whose answer it knows. Stricter writer prompts tried before
+    the freeze on 30 failed slots filled few (2 to 5 of 15 per prompt and dataset), so the rule stayed. artifact/selection_check.py
+    measures no-context alone accuracy on every frame claim by validation outcome (experiments/selection.json, seed 1, three
+    models; those answers enter no contrast), and rows C1, C2, C3 per official label are secondary.'
+  distractor_audit: 'Before the pilot, the same judge reads the claim and each block and answers SUPPORTS, REFUTES or NEITHER
+    (artifact/audit_blocks.py, frames/<dataset>.audit.jsonl). A distractor judged anything but NEITHER is contaminated. Non-annotated
+    same-source sentences are not established neutral text, so this is the measure of that risk; a judge can also err, and
+    its answers on gold and retrieved blocks are printed as a check. Contrasts C2_clean and C3_clean are judge-screened subsets
+    that drop those claims; they are not verified neutral. Measured on the valid claims: contaminated retrieved distractors
+    36 of 448 FEVER and 12 of 392 SciFact; contaminated gold distractors 24 of 435 FEVER and 29 of 392 SciFact. Judge check
+    on gold blocks: it agrees with the official label on 368 of 446 FEVER and 247 of 392 SciFact blocks, says NEITHER on 64
+    and 133, and contradicts the label on 14 and 12, so it under-reads evidence, more on SciFact.'
+  prompt_order: 'Primary prompts: block, claim, misinformation, question. The misinformation is therefore the most recent
+    text. The *_last controls put the block after the misinformation, directly before the question.'
+  drop: A(context, alone) - A(context, channel arm), in accuracy points, per claim, mean over seeds and models.
+  did: DiD_k(c) = drop_k(no_context) - drop_k(c), for channel k in notes (false_text) and peers (false). Positive means the
+    context lowers the drop.
+  contrasts:
+    C1: DiD_k(retrieved) against 0
+    C2: DiD_k(retrieved) - DiD_k(distractor_retrieved), on claims whose blocks match
+    C3: DiD_k(gold) - DiD_k(distractor_gold), on claims whose blocks match
+    block_match: 'An evidence block and its distractor match when they have the same sentence count and their word counts
+      differ by at most 20% of the evidence block. Measured on the validated claims: retrieved pairs 420 of 448 FEVER and
+      387 of 392 SciFact; gold pairs 316 of 435 FEVER and 315 of 392 SciFact. C2_all and C3_all, on all claims with both blocks,
+      are a sensitivity.'
+    levels: L1 = A(retrieved, k) - A(no_context, k); L2 = A(retrieved, k) - A(distractor_retrieved, k); L3 = A(gold, k) -
+      A(distractor_gold, k), the last two on matched claims. A block can raise accuracy under misinformation without shrinking
+      the drop, so the paper never reports a drop contrast without its level.
+    CH: drop_notes(no_context) - drop_peers(no_context), secondary
+    C2h_C3h: 'Sensitivity on a common stratum: for draws of the same claim, model and seed that are correct alone under both
+      the evidence and its distractor, the wrong rate under the channel with the distractor minus with the evidence. Conditioning
+      on alone answers leaves this a sensitivity and not a causal estimate.'
+    C3_last: drop_k(distractor_gold_last) - drop_k(gold_last), on the control subset
+    C3_reasoned: drop_k(reasoned_distractor_gold) - drop_k(reasoned_gold), on the control subset
+    C3_gaps: C3_last - C3 and C3_reasoned - C3, per claim on the same matched claims of the control subset (direct tests of
+      moderation)
+    skeptic: drop_k(no_context) - drop_k(skeptic) and A(skeptic, k) - A(no_context, k), on the control subset; the published
+      source-skepticism sentence as the cheap alternative
+  scoring: 'One parser and one predicate everywhere: the parsed label equals the official label (SUPPORTS or SUPPORT is TRUE,
+    REFUTES or CONTRADICT is FALSE). An unparsed answer counts as wrong and is reported per arm and model, with parsed-only
+    accuracy beside it.'
+  independence_unit: 'The claim. Intervals resample source clusters (the first official evidence page or abstract: 356 among
+    the valid FEVER claims, 254 among the valid SciFact claims). Seeds, models and arms are nested within a claim and paired.
+    Repeated seeds add no claim diversity and are not counted as such. Blocks of claims in different clusters can cite the
+    same page or abstract, so these clusters are not fully independent: joining clusters that share any cited source in any
+    block leaves 347 of 356 FEVER and 142 of 254 SciFact clusters, the largest SciFact one holding 109 claims (analyze.py
+    merged_clusters; decision_rules.overlap).'
+hypotheses:
+- id: H1n
+  statement: Notes C1 > 0 on each dataset, by decision_rules.primary.
+  primary_metric: did_notes
+  direction: positive
+- id: H2n
+  statement: Notes C2 > 0 on each dataset, by decision_rules.primary.
+  primary_metric: did_notes
+  direction: positive
+- id: H3n
+  statement: Notes C3 > 0 on each dataset, by decision_rules.primary.
+  primary_metric: did_notes
+  direction: positive
+- id: H1p
+  statement: Peers C1 > 0 on each dataset, by decision_rules.primary.
+  primary_metric: did_peers
+  direction: positive
+- id: H2p
+  statement: Peers C2 > 0 on each dataset, by decision_rules.primary.
+  primary_metric: did_peers
+  direction: positive
+- id: H3p
+  statement: Peers C3 > 0 on each dataset, by decision_rules.primary.
+  primary_metric: did_peers
+  direction: positive
+decision_rules:
+  primary: 'Twelve rows: C1, C2, C3 for two channels and two datasets, pooled across models, Holm across the twelve. C1 conclusions
+    name no context as the comparator; C2 and C3 conclusions name the matched distractor. Positive: Holm p below 0.05 and
+    95% CI lower bound above 0. A positive row carries no magnitude label: its intervals are printed, and an upper endpoint
+    under 5 points is not read as excluding a 5-point benefit. Positive takes precedence over the exclusion rule. Supported
+    negative: not positive, and the one-sided upper bound at alpha/12 (the 0.99583 quantile of the same resamples) is below
+    5 points, so exclusions hold jointly across the twelve rows. It is worded as "excludes a benefit of 5 points or more,
+    compared with [the comparator]", which is not proof of no benefit. The table prints the 95% interval; the exclusion bound
+    is in the manifest. Otherwise inconclusive. The point estimate is compared with the 5-point smallest effect of interest
+    as a description of size, never as a claim that the true effect exceeds 5.'
+  floor_limited: A supported negative becomes floor-limited when that channel's pooled no-context drop on that dataset is
+    under 10 points, since a 5-point brake could barely be observed. Feasibility peer drops were 13 to 28 points on the validated
+    stimuli, so this label is not expected on them; if it fires it is a limit of the channel in this format and is reported
+    as such.
+  room_limited: A C2 or C3 row that meets the supported-negative rule becomes room-limited when its C2h or C3h has a 95% CI
+    lower bound above 0. A flag that does not fire does not remove the room-to-fall explanation, which stays in the limitations.
+  position_and_format: A C3 row is flagged position-dependent when C3_last and C3_last - C3 both have a 95% CI lower bound
+    above 0, and format-dependent when C3_reasoned and C3_reasoned - C3 both do. A flagged supported negative is stated together
+    with the dependence, never alone. A control that fails to reach those bounds does not show that position or format is
+    irrelevant, and the paper says so. The controls use 200 claims. They cover C3 only, so a negative C2 keeps a recency caveat.
+  contamination: A C2 or C3 row that is not positive is flagged contamination-dependent when its C2_clean or C3_clean has
+    a 95% CI lower bound above 0, and it is then stated together with that dependence. The fraction of contaminated distractors
+    is printed. The subsets are judge-screened, so the flag carries the judge's unknown error rates.
+  overlap: 'Each primary row is re-estimated from the same per-claim series on the merged source-overlap clusters of definitions.independence_unit,
+    with its own Holm across the twelve rows and its own joint exclusion bound; this repeats the primary family and opens
+    no new one. A row that is positive or a supported negative under first-source clusters and has another decision under
+    merged clusters is overlap-dependent: its reported decision is inconclusive in the table, the results manifest, the generated
+    macros and the claims, the table flags it, and both clusterings'' decisions stay in the manifest. analyze.py combine_decisions
+    is the one function used by production and by the calibration, and conformance_test.py holds frozen fixtures for every
+    pair of decisions. Merged clusters can only remove a conclusion, never add one. Both sets of intervals are in the results
+    manifest. Remaining assumption: claims in different merged clusters share no source in any block, which leaves dependence
+    through shared topics, writer and models unmodelled.'
+  flag_family: 'The position, format, contamination, room and model flags use unadjusted 95% intervals. They are descriptive:
+    they can only add a caveat to a row, and they never turn a row into a positive claim.'
+  model_dependent: The primary table prints each model's point estimate beside every pooled row; per-model intervals are in
+    the artifact and in the results manifest. A pooled row is flagged model-dependent when one model's 95% CI lies above 0
+    and another's below 0, and a flagged row is not worded as a fleet-wide statement. Per-model rows need up to 819 claims
+    for the 5-point half-width on the feasibility sds against at most 448 available, so they are named exploratory here, before
+    any study result.
+  inconclusive: An inconclusive row is reported as inconclusive and is not presented as a negative finding or as a trend.
+  beneficial: 'Beneficial: wrong alone in no context and in the compared context (same model and seed), then right under true
+    peers. Harmful: correct alone in both, then wrong under the false channel, separately for notes and peers. Each claim
+    is one unit: per-claim rates over its stratum draws, so displayed rates and their difference share one claim-weighted
+    estimand. Non-inferiority for the beneficial rate: comparator no context, H0 difference at most -5 points, decided by
+    the 95% lower bound above -5 points, for retrieved and gold, per dataset pooled across models; four uncorrected exploratory
+    tests; not estimable when the stratum has fewer than 50 claims. Correction accounting exists for true peers only: there
+    is no true-notes arm, so the paper makes no claim about correction in the notes channel.'
+  hit_miss: Natural retrieval hit against miss is reported as an association only; the causal contrast is C3.
+datasets:
+- id: fever
+  name: FEVER 1.0 development set, SUPPORTS and REFUTES claims, fixed sample of 1200 (600 per label), of which 448 have validated
+    stimuli
+  source: https://fever.ai/dataset/fever.html
+  license: CC BY-SA 3.0
+  split: shared_task_dev, NOT ENOUGH INFO excluded and disclosed; sample fixed by artifact/prepare_frames.py, hashes in frames/SHA256SUMS
+  size: 448
+  ground_truth_id: fever
+  notes: The frame was 400 claims and was extended once to 1200, with the first 400 unchanged, because validation left 135
+    of 400; the decision used yield only and no study cell had run. Of 448 valid claims 435 have both gold blocks and 316
+    of those match; the retrieved block holds a full official evidence set for 226 of 448 (50%) and 540 of 1200 in the frame
+    (45%).
+- id: scifact
+  name: SciFact train and dev claims with evidence (456 SUPPORT, 237 CONTRADICT), claim-level label adaptation of the official
+    task
+  source: https://github.com/allenai/scifact
+  license: claims and annotations CC BY 4.0
+  split: all 693 claims with evidence, of which 392 have validated stimuli; 416 claims without evidence excluded and disclosed;
+    no claim has mixed labels, so that rule removes none
+  size: 392
+  ground_truth_id: scifact
+  notes: retrieved block holds a full official evidence set for 221 of 392 (56%) and 364 of 693 in the frame (53%). The labels
+    are imbalanced, so the majority-class accuracy is printed beside alone accuracy.
+baselines:
+- id: no_context
+  name: No context, the reference of every DiD
+  implementation: artifact/run_cell.py method no_context
+- id: instruction
+  name: Independent-thinking system prompt, no context, adapted from the BenchForm empowered-persona mitigation
+  citation_key: weng2025benchform
+  implementation: artifact/run_cell.py method instruction; wording paraphrased, disclosed
+- id: distractor_retrieved
+  name: Retrieved-matched distractor block
+  implementation: artifact/run_cell.py method distractor_retrieved; frames built by artifact/prepare_frames.py
+- id: gold
+  name: Official gold evidence block
+  implementation: artifact/run_cell.py method gold
+- id: distractor_gold
+  name: Gold-matched distractor block
+  implementation: artifact/run_cell.py method distractor_gold
+- id: reasoned
+  name: One sentence of reasoning then the answer, no context, fixed 200 claims per dataset, arms alone, false, false_text
+  implementation: artifact/run_cell.py method reasoned
+- id: group_none
+  name: Three real models, independent vote against one round of deliberation, no context
+  implementation: artifact/run_cell.py method group_none, model fleet
+- id: group_retrieved
+  name: The same group with the same retrieved block for every agent in both rounds
+  implementation: artifact/run_cell.py method group_retrieved, model fleet
+comparator_coverage: The strongest cheap published alternatives are the BenchForm-style independent-thinking prompt (a full
+  baseline, paraphrased, so it does not stand for every prompt defense) and the source-skepticism sentence of the MINT study
+  (control method skeptic). Verifier agents and debate defenses are outside this estimand, which is the effect of evidence
+  in the prompt; the paper compares only with what it ran.
+method:
+  id: retrieved
+  name: Passages retrieved from an independent corpus, placed before the claim
+  description: 'Plain BM25 over the FEVER Wikipedia dump or the SciFact abstract corpus, top 3 sentences, arms alone, false,
+    true, false_text, alone2. The study proposes no method: retrieved is the condition whose brake is being measured.'
+models_or_configs:
+- id: qwen3-coder-30b-a3b-instruct
+  family: qwen
+  note: pilot model; code-tuned; named instance, context 8192 and parallel 4, read back per run
+- id: qwen/qwen3.6-35b-a3b
+  family: qwen
+  note: named instance of the study, context 8192 and parallel 4, read back per run
+- id: gemma-4-31b-it-qat
+  family: gemma
+  note: named instance of the study, context 8192 and parallel 4, read back per run
+- id: fleet
+  family: group
+  note: the three models above together, group methods only
+seeds:
+- 1
+- 2
+- 3
+sampling_and_seeds: Temperature 0.3, reasoning_effort none, max_tokens 8 for one-word answers, 60 for group first-round reasons,
+  200 for reasoned answers. Each request carries sha256(seed|item|method/arm|model) mod 2^31-1, so draws are reproducible
+  where the server reproduces. A completed request is cached per dataset, seed and model, so a resumed run re-sends nothing
+  and a changed prompt is a new key.
+serving_readiness:
+  checks: 'experiments/feasibility/seedcheck.log records the pre-freeze check on all three models: 4 distinct completions
+    among 4 seeds at temperature 1.0 and a repeated seed reproduces, so the seed reaches the sampler. At the study temperature
+    0.3, one-word answers under false notes differ between 3 seeds on 2 of 30 claims (qwen3-coder), 7 (qwen3.6) and 2 (gemma),
+    so the seeds are real and add little. The analysis reports per model and dataset how often seeds disagree on the no-context
+    alone outcome, and the paper states that repeated seeds add no claim diversity.'
+  older_note: An earlier internal model suite records a 2026-10-10 suite with gemma not seed-distinct. The live check of 2026-11-03
+    is the one that applies to this study.
+  manifest: 'experiments/model_manifest.json pins for the three models, the writer and the judge: file sha256 taken on the
+    Studio, the server''s arch, quantization, format and maximum context, the LM Studio version, the hash of frames/SHA256SUMS
+    (frames, rationales, audits), and the serving configuration (context 8192, parallel 4, the instance map). Each result.json
+    holds the read-back settings and the sha256 of its predictions.jsonl, which keeps every full response text. Each run is
+    bound to the protocol and runner hashes. A failed cell stays in the registry.'
+  fail_closed: Before a study client sends its first request, run_cell.py requires the pinned instance map, the named instance
+    reported as loaded at the pinned context, and the pinned model identity; a missing instance or an endpoint error fails
+    the cell. Before a cell is accepted it recomputes the hashes of the actual frame files and compares them with SHA256SUMS
+    and the manifest, requires identity read-back for every model of the cell, refuses missing provenance, and requires every
+    answer to come from the pinned instance. The answer cache sits under the manifest hash, so other frames or another serving
+    configuration use another cache. The API does not report parallelism or the file hash, so the run script checks `lms ps
+    --json` (identifier, model key, context, parallel, variant) before each phase and after it and appends it to experiments/serving_receipts.jsonl,
+    and the manifest capture (capture_manifest.py) is repeated at the end of the run and its file hashes compared with the
+    manifest; a difference voids the cells served since the last match.
+  isolation: Other work shares the server. Every study request addresses a named instance of the study (the map is instances.json
+    in the data folder, the model key stays the cache key), so it cannot land on another instance, and a request whose instance
+    is not loaded fails instead of loading one. A refused model load waits and retries; it is not a failed cell. No other
+    model is ever unloaded. At most 2 worker processes per run; swap is checked before each batch. Stimulus drafts from before
+    this rule were served by another instance of the same model file; they are text fixed in the frames and carry no study
+    answer.
+  group_serving: 'The Studio cannot hold all three instances beside other work, so artifact/warm_group.py serves the group
+    methods one model at a time: round 1 for each model, then round 2 for each. Prompts and request seeds are those of run_cell.py,
+    and round 2 quotes the cached round 1 answers. The group cell then reads every answer from the cache and sends no request.'
+metrics:
+- id: notes_drop
+  name: alone accuracy minus accuracy under false notes, no adjustment, in a single cell
+  evaluator_id: e_fever
+  evaluator_by_dataset:
+    fever: e_fever
+    scifact: e_scifact
+  direction: lower
+- id: peer_drop
+  name: alone accuracy minus accuracy under false peers, in a single cell
+  evaluator_id: e_fever
+  evaluator_by_dataset:
+    fever: e_fever
+    scifact: e_scifact
+  direction: lower
+- id: did_notes
+  name: difference in the notes drop between contexts (C1, C2, C3 for the notes channel)
+  evaluator_id: e_fever
+  evaluator_by_dataset:
+    fever: e_fever
+    scifact: e_scifact
+  direction: higher
+- id: did_peers
+  name: difference in the peer drop between contexts (C1, C2, C3 for the peers channel)
+  evaluator_id: e_fever
+  evaluator_by_dataset:
+    fever: e_fever
+    scifact: e_scifact
+  direction: higher
+- id: vote_deliberated
+  name: majority accuracy of the three real models after one round of deliberation
+  evaluator_id: e_fever
+  evaluator_by_dataset:
+    fever: e_fever
+    scifact: e_scifact
+  direction: higher
+evaluators:
+- id: e_fever
+  name: FEVER official label semantics (label accuracy of the official scorer), SUPPORTS and REFUTES only
+  source: https://github.com/sheffieldnlp/fever-scorer
+  official: true
+  note: run_cell.py applies the same predicate to every arm; evidence retrieval scoring of the official task is not used and
+    this is disclosed
+- id: e_scifact
+  name: SciFact official label semantics, claim level
+  source: https://github.com/allenai/scifact
+  official: true
+  note: claim-level adaptation, not the official abstract-and-rationale evaluation; disclosed
+statistics:
+  paired_test: paired cluster bootstrap over source clusters, per-claim series, 10,000 resamples, seed family 20270100 and
+    up, two-sided p from the sign of the resampled means
+  ci_method: percentile 95% interval from the same resamples
+  effect_size: the estimate itself in accuracy points, with 5 points as the smallest effect of interest
+  correction: 'Three families, enumerated. Primary: Holm across the twelve rows. Secondary: one Holm family over every row
+    of the results manifest''s secondary list (per-model C1 to C3, per-label C1 to C3, C2h, C3h, C2_all, C3_all, C2_clean,
+    C3_clean, L1 to L3, C3_last, C3_reasoned, their gaps, skeptic, instruction, retrieved_vs_instruction, hit and miss, reasoned
+    and format, CH, attribution); never decision rows. Uncorrected and exploratory: the four beneficial non-inferiority tests
+    and the group rows (two procedures and the evidence vote per dataset), and the descriptive flags of decision_rules.flag_family.'
+  alpha: 0.05
+  precision: 'Feasibility claim-level sds on the 40 validated FEVER claims, one seed, pooled across models (notes C1, C2,
+    C3: 40, 45, 34 points; peers: 42, 27, 23). The first-round stimuli on 100 claims gave smaller sds (notes 30, 32, 24; peers
+    27, 24, 19). With the actual validated sets and the 40-claim sds, the projected 95% half-widths with no within-cluster
+    correlation are, for notes, 3.7, 4.3, 3.8 points on FEVER (n 448, 420, 316) and 3.9, 4.4, 3.8 on SciFact (n 392, 387,
+    315), and for peers 3.9, 2.6, 2.5 and 4.2, 2.7, 2.5. In the worst case of perfect correlation within a cluster (design
+    effect = sum of squared cluster sizes over n: FEVER 1.46, 1.42, 1.39; SciFact 2.07, 2.06, 1.99) they are, for notes, 4.5,
+    5.1, 4.4 and 5.7, 6.4, 5.3, and for peers 4.7, 3.1, 2.9 and 6.0, 3.9, 3.5. So the 5-point target holds without clustering
+    and fails in the worst case for notes C2 on FEVER and for notes C1, C2, C3 and peers C1 on SciFact. The SciFact frame
+    is exhausted, so this is accepted: such a row can end inconclusive and is reported so. SciFact uses the FEVER sds as a
+    projection; its observed half-widths come from the baselines stage and the analysis. Per-model rows are exploratory.'
+  multiple_looks: No interim look changes a rule. The baseline and pilot cells are read only for the kill criteria.
+  analysis_script: artifact/analyze.py joins every paired outcome on dataset, claim, model and seed, refuses incomplete arms,
+    and was checked on a synthetic registry with planted effects and with shuffled records (all estimates and intervals identical).
+  calibration: 'artifact/analysis_validation.py runs before any study cell and uses no study outcome; analysis/analysis_validation.json
+    holds every number. Single rows: Gaussian contrasts (sd 45 points) on the real clusters, within-cluster correlation 0,
+    0.3 and 0.7, 1,000 simulations per setting: rejection of zero under the null 3.4 to 7.6%; coverage 92.4 to 96.6%; exclusion
+    under a true 5-point benefit at most 0.9%; exclusion under no benefit only 15 to 37%. The family: binary answers of three
+    models per claim, context and arm, with latent claim and cluster effects shared across channels, so the twelve rows are
+    dependent and the contrasts bounded and skewed (simulated sds 42 to 52 points), passed through the production bootstrap,
+    Holm and decide on the real clusters and matched sets, 500 simulations and 2,000 resamples per setting. Acceptance rule,
+    fixed before it ran: any false positive among the twelve rows under the global null, and any false exclusion under a true
+    5-point benefit in all rows, each at most 0.05 + 2 Monte Carlo standard errors, and per-row 95% coverage at least 0.90.
+    If a familywise rule fails, the simultaneous claim is dropped and intervals are reported as exploratory. Results, all
+    three acceptance checks met: any false positive under the global null 1.4 to 2.2%; any false exclusion under a true 5-point
+    benefit in all rows 3.4 to 4.8% (Monte Carlo standard errors about 1 point); per-row coverage at least 91.8% in every
+    setting. Multiplicity-adjusted power per row: Holm-positive under a true 5-point benefit 11 to 45%, and under a true 15-point
+    C1 effect 100%; exclusion under no benefit 14 to 49%, and under -2 points 34 to 86%. So a real 5-point benefit will often
+    not be declared positive and a near-zero row will often be inconclusive; the paper prints these numbers beside the table.
+    Source overlap: the family simulation repeated with latent effects shared across merged source-overlap clusters, a harsher
+    dependence, 500 simulations and 2,000 resamples per setting, global null and true 5-point benefit, correlation 0.3 and
+    0.7 (analysis_validation.json, key overlap). Acceptance, fixed before it ran: merged clusters meet the same familywise
+    and coverage rule. Results, all met: any false positive 2.4 to 4.2%, any false exclusion 3.8 to 4.4%, per-row coverage
+    at least 90.0%. First-source clusters alone fail under this dependence: any false positive 10.6 to 19.6%, any false exclusion
+    9.0 to 20.4%, per-row coverage down to 50.6%. So the reported rule requires both clusterings to reach a conclusion (decision_rules.overlap):
+    any false positive 2.0 to 3.2%, any false exclusion 2.4 to 4.2%, Holm-positive under a true 5-point benefit 5 to 37% per
+    row, exclusion under no benefit 9 to 45% per row. Under the weaker dependence of the family validation the first-source
+    figures above apply, and the merged requirement only lowers them.'
+matrix:
+  cells_expected: 138
+  shape: 8 baselines + retrieved = 9 methods x 2 datasets x 3 seeds x 4 model entries = 216, minus group methods on the 3
+    single models (36) and the 7 scripted methods on fleet (42).
+  exclusions:
+  - method: group_none
+    model: qwen3-coder-30b-a3b-instruct
+    reason: group methods run on the fleet entry only
+  - method: group_none
+    model: qwen/qwen3.6-35b-a3b
+    reason: group methods run on the fleet entry only
+  - method: group_none
+    model: gemma-4-31b-it-qat
+    reason: group methods run on the fleet entry only
+  - method: group_retrieved
+    model: qwen3-coder-30b-a3b-instruct
+    reason: group methods run on the fleet entry only
+  - method: group_retrieved
+    model: qwen/qwen3.6-35b-a3b
+    reason: group methods run on the fleet entry only
+  - method: group_retrieved
+    model: gemma-4-31b-it-qat
+    reason: group methods run on the fleet entry only
+  - method: retrieved
+    model: fleet
+    reason: scripted methods run per single model
+  - method: no_context
+    model: fleet
+    reason: scripted methods run per single model
+  - method: instruction
+    model: fleet
+    reason: scripted methods run per single model
+  - method: distractor_retrieved
+    model: fleet
+    reason: scripted methods run per single model
+  - method: gold
+    model: fleet
+    reason: scripted methods run per single model
+  - method: distractor_gold
+    model: fleet
+    reason: scripted methods run per single model
+  - method: reasoned
+    model: fleet
+    reason: scripted methods run per single model
+  cut_order: 'Applied only if the measured throughput cannot finish before 18 November, recorded as a dated amendment and
+    disclosed, and decided from throughput alone. The single cut: drop the group methods, so RQ4 is unanswered and the paper
+    says so. Datasets, models, seeds, the six primary methods and the S_controls group are never cut.'
+sensitivity_cells:
+- id: S_controls
+  methods:
+  - gold_last
+  - distractor_gold_last
+  - reasoned_gold
+  - reasoned_distractor_gold
+  - skeptic
+  requires_full: false
+  scope:
+    datasets:
+    - fever
+    - scifact
+    seeds:
+    - 1
+    - 2
+    - 3
+    models:
+    - qwen3-coder-30b-a3b-instruct
+    - qwen/qwen3.6-35b-a3b
+    - gemma-4-31b-it-qat
+  purpose: Position, format and skepticism controls on a fixed 200 claims per dataset, arms alone, false, false_text. They
+    answer the two alternative explanations of a negative C3 that the block order and the one-word format would otherwise
+    leave open, and they place the cheap prompt alternative beside the evidence results.
+headroom:
+  metric_id: notes_drop
+  pilot_threshold: 0.02
+  pilot_rule: The pilot step computes min(notes_drop of no_context, notes_drop of distractor_retrieved) minus notes_drop of
+    retrieved on the pilot scope and writes GO or FALLBACK against 2 points. The pilot standard error is about 4 points, so
+    this value only chooses which pre-registered statement the manuscript leads with. Both outcomes run the identical matrix
+    and the identical decision rules.
+  pilot_scope:
+    datasets:
+    - fever
+    seeds:
+    - 101
+    models:
+    - qwen3-coder-30b-a3b-instruct
+    baseline_methods:
+    - no_context
+    - distractor_retrieved
+    claims: 200, by PAPER_LIMIT=200 (a fixed stride of the valid claims, 140 TRUE and 60 FALSE)
+    note: Seed 101 is outside the matrix seeds, so pilot draws are a separate stream and never enter the analysis (artifact/analyze.py
+      reads kinds full, baseline, sensitivity). The pilot claims overlap the frame; since the pilot changes no rule this cannot
+      select a result.
+  pilot_checks: artifact/pilot_checks.py writes experiments/pilot_checks.json with the values for the kill criteria below.
+kill_criteria:
+- 'Pilot: the no-context notes drop is below 5 points, so there is nothing to brake in the primary channel. The study is stopped.'
+- 'Pilot: more than 5% of one-word answers of the pilot model are unparsed after one prompt repair. The model is replaced
+  by amendment before any further cell; a second failure stops the study.'
+- 'Frame: the retrieved block holds a full official evidence set for fewer than 25% of the claims of a dataset, so the retrieved
+  arm cannot speak to retrieval (measured on the valid claims: 50% and 56%, so this is already satisfied).'
+- 'Compute: the projection at the measured throughput exceeds the deadline after cut_order is applied. The study is stopped
+  and reported.'
+positive_fallback: If evidence does not brake misinformation in a channel beyond added text, or brakes it only by also blocking
+  true corrections, the paper reports a supported negative or an honest inconclusive, with harmful and beneficial accounting
+  for true peers only (there is no true-notes arm, so nothing is said about corrections from true notes), the position and
+  format controls, and the vote comparison, which extends "One Axis, No Brake" (which names external evidence as a route forward).
+  A row whose floor or room rule fires carries that label and is never reported as a negative.
+alternative_explanations:
+- name: block presence rather than content
+  reading: Any block changes attention to the misinformation. C2 and C3 test content against a matched block, and gemma's
+    feasibility pattern (drop vanishes under any block) is the reason per-model rows are mandatory.
+- name: room to fall
+  reading: A distractor lowers alone accuracy and leaves less to lose, which pushes C2 and C3 negative. C2h and C3h and the
+    room-limited rule address it, without removing it.
+- name: recency
+  reading: Primary prompts end with the misinformation. C3_last tests the other order for gold evidence.
+- name: one-word format
+  reading: A forced one-word answer may keep a model from using the block. C3_reasoned tests the reasoned format for gold
+    evidence.
+- name: distractor content
+  reading: Same-source distractors can contain unannotated evidence or misleading text. The block audit measures it and C2_clean
+    and C3_clean test its effect; a judge can miss it, so the limit stays stated.
+- name: stimulus selection
+  reading: Validation keeps claims the writer can argue against, which are harder for the models and mostly TRUE. Effects
+    can differ on claims a model knows, where false rationales could not be written and validated. experiments/selection.json
+    measures the gap, per-label rows test the label mix, and conclusions name the validated claims.
+- name: memorised labels
+  reading: FEVER and SciFact are public. No-context alone accuracy is reported and the estimand is a within-regime change.
+- name: rationale source
+  reading: Rationales come from qwen3.6, which is also scored on them, and they passed a judge from another family. Per-model
+    estimates sit beside every pooled row, and the paper states the affinity. They are published.
+compute:
+  where: Mac Studio M3 Ultra 96 GB, LM Studio, one model instance at a time
+  budget_hours: 100
+  budget_scope: 'On 840 validated claims the matrix is about 238,000 calls (scripted about 207,000, group about 30,000), S_controls
+    about 54,000, and the selection check about 3,200 beyond cached answers. Measured on 2026-11-03 under contention at parallel
+    4: gemma about 1 call per second, qwen3.6 about 3, and at parallel 2 coder-30b about 4. About 45 hours of wall clock.'
+execution:
+  command: python3 run_cell.py --method {method} --dataset {dataset} --seed {seed} --model {model} --out {out_dir}
+  workdir: artifact
+  note: The baselines stage runs one full-matrix cell per baseline and dataset (seed 1, pilot model for scripted baselines,
+    fleet for group baselines). They are ordinary matrix cells and are not re-run.

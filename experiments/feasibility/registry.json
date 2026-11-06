@@ -1,0 +1,25 @@
+{
+ "note": "Pre-freeze feasibility runs (topics and protocol stages, 2026-11-03 and 2026-11-04) on FEVER claims disjoint from the study frames, one seed. They informed the prompt format, the sampling settings, the primary channel and the compute estimate. No reported contrast uses them; the paper quotes the two summaries only as design context.",
+ "runs": [
+  {
+   "path": "format_probe.log",
+   "what": "prompt-format probe: three instruction variants (v0, v1, v2) per model on the same claims",
+   "date": "2026-11-03"
+  },
+  {
+   "path": "seedcheck.log",
+   "what": "seed probe: distinct sentences and one-word answer disagreement across seeds at temperature 0.3 and 1.0",
+   "date": "2026-11-03"
+  },
+  {
+   "path": "result.first.json",
+   "what": "first feasibility summary, 100 FEVER claims disjoint from the frames, before stimulus validation; fixed the primary channel",
+   "date": "2026-11-03"
+  },
+  {
+   "path": "result.json",
+   "what": "repeat on the validated stimuli: the 40 of those claims whose stimuli passed validation",
+   "date": "2026-11-03"
+  }
+ ]
+}
