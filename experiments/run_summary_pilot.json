@@ -1,0 +1,13 @@
+{
+  "cells_total": 3,
+  "deferred_until_full": [],
+  "executed": 1,
+  "failed": 0,
+  "finished_at": "2026-11-05T03:30:51+00:00",
+  "kind": "pilot",
+  "lane_id": "icsc2027-scsn-ai",
+  "ok": 1,
+  "registry": "experiments/registry.json",
+  "seconds": 129.7,
+  "skipped_done": 2
+}

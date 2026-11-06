@@ -1,0 +1,10 @@
+{
+ "drawn": 9433,
+ "rejected_judge": 4364,
+ "rejected_label_word": 1586,
+ "claims": 693,
+ "claims_valid": 392,
+ "slot_unfilled": 697,
+ "rejected_duplicate": 19,
+ "rejected_refusal": 3
+}

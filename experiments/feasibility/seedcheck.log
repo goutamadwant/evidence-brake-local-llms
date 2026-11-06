@@ -1,0 +1,18 @@
+qwen3-coder-30b-a3b-instruct sentence temp 1.0 distinct of 4: 4
+qwen3-coder-30b-a3b-instruct sentence temp 0.3 distinct of 4: 1
+qwen3-coder-30b-a3b-instruct one-word false_text temp 0.3 claims of 30 with any seed disagreement: 2
+qwen3-coder-30b-a3b-instruct one-word false_text temp 1.0 claims of 30 with any seed disagreement: 2
+qwen/qwen3.6-35b-a3b sentence temp 1.0 distinct of 4: 4
+qwen/qwen3.6-35b-a3b sentence temp 0.3 distinct of 4: 1
+qwen/qwen3.6-35b-a3b one-word false_text temp 0.3 claims of 30 with any seed disagreement: 7
+qwen/qwen3.6-35b-a3b one-word false_text temp 1.0 claims of 30 with any seed disagreement: 6
+gemma-4-31b-it-qat sentence temp 1.0 distinct of 4: 4
+gemma-4-31b-it-qat sentence temp 0.3 distinct of 4: 3
+gemma-4-31b-it-qat one-word false_text temp 0.3 claims of 30 with any seed disagreement: 2
+gemma-4-31b-it-qat one-word false_text temp 1.0 claims of 30 with any seed disagreement: 5
+gemma-4-31b-it-qat distinct among 4 seeds: 3 same seed reproduces: True
+   The vast, turquoise expanse of the sea stretches endlessly toward the horizon, hiding a wo
+qwen/qwen3.6-35b-a3b distinct among 4 seeds: 1 same seed reproduces: True
+   The sea stretches endlessly toward the horizon, its rhythmic waves whispering ancient secr
+qwen3-coder-30b-a3b-instruct distinct among 4 seeds: 1 same seed reproduces: True
+   The endless expanse of turquoise water stretches toward the horizon, its gentle waves whis

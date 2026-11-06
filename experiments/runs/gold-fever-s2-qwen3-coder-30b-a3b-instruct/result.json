@@ -1,0 +1,37 @@
+{
+  "metric_values": {
+    "acc_alone": 0.9486607142857143,
+    "acc_false": 0.8147321428571429,
+    "acc_true": 0.953125,
+    "acc_false_text": 0.35714285714285715,
+    "peer_drop": 0.1339285714285714,
+    "notes_drop": 0.5915178571428572,
+    "peer_gain": 0.004464285714285698,
+    "parse_failure_rate": 0.0
+  },
+  "evaluator_id": "e_fever",
+  "n": 448,
+  "provenance": {
+    "host": "http://127.0.0.1:11435",
+    "models": {
+      "qwen3-coder-30b-a3b-instruct": {
+        "arch": "qwen3moe",
+        "quantization": "Q4_K_M",
+        "compatibility_type": "gguf",
+        "max_context_length": 262144,
+        "loaded_context_length": null,
+        "state": "not-loaded"
+      }
+    },
+    "instances": {
+      "qwen3-coder-30b-a3b-instruct": {
+        "id": "icsc-coder",
+        "loaded_context_length": 8192,
+        "state": "loaded"
+      }
+    }
+  },
+  "frames_sha256": "3f83353b5bf4864a7497865fd686d2d4108732167f71cd70edaae2e0596d9ce3  feasibility.jsonl\n66135490e6197d427f46de0c9de9b09072c6e7b78933a8d99abeab4dd0ebdee5  feasibility.rationales.jsonl\n1a675ab517d7045b89039c2ef0dcda2ccb093bcf7b87eeb942db8aa643a9f59c  feasibility.rationales.stats.json\ne1480b37f9d6c611f76f37d4e51bbd71cbfe332a32e041a557894f23a2eef8fe  fever.audit.jsonl\nbff2a559f912f36e4f6defe7e2e8dfbe906fdd69fbfe2f3c6ca4fba7e22b1fab  fever.jsonl\n62b41d41c9a187ad1116fe24b4f834878b8d2a116a5cfd53ba180a112d93d041  fever.rationales.jsonl\n95a841e6a81acef82d3b56d397161fb9bb21882160c7a1928bf30ad400ab822d  fever.rationales.stats.json\n9b912a07a01d295c014e50aa004aac8356a6263641a95bbcbece57e0b2809145  scifact.audit.jsonl\nb2eb62bfce2a3ab619c48f9dd9a4b24f6259103d744687340578a2eb14537a23  scifact.jsonl\n03fa145d59dffa9e02414f8ad4554d9cb7ae356be1f6925718aebba547316a69  scifact.rationales.jsonl\n0e55b80a78ff61515fb488e3509efdcf352be97f8439e0d981189e348855ef62  scifact.rationales.stats.json\n",
+  "predictions_sha256": "1d6d3b6115beed120adec0048f20b1e7abffaa0ad1f875347656c43edd35f0ca",
+  "temperature": 0.3
+}

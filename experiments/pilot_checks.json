@@ -1,0 +1,31 @@
+{
+  "claims": {
+    "no_context": 200,
+    "retrieved": 200,
+    "distractor_retrieved": 200
+  },
+  "notes_drop_no_context": 0.5800000000000001,
+  "kill_notes_floor": false,
+  "max_parse_failure_rate": 0.0,
+  "kill_parse": false,
+  "retrieval_hit_rate": {
+    "fever": 0.5044642857142857,
+    "scifact": 0.5637755102040817
+  },
+  "kill_hit_rate": false,
+  "notes_drop": {
+    "no_context": 0.5800000000000001,
+    "retrieved": 0.47500000000000003,
+    "distractor_retrieved": 0.3350000000000001
+  },
+  "peer_drop": {
+    "no_context": 0.43000000000000005,
+    "retrieved": 0.06500000000000006,
+    "distractor_retrieved": 0.07000000000000006
+  },
+  "accuracy_alone": {
+    "no_context": 0.675,
+    "retrieved": 0.795,
+    "distractor_retrieved": 0.55
+  }
+}

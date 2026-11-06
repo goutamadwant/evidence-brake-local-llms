@@ -1,0 +1,294 @@
+{
+ "seed": 1,
+ "note": "no-context alone accuracy on all frame claims, by validation outcome",
+ "rows": [
+  {
+   "dataset": "fever",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": true,
+   "gold": "TRUE",
+   "claims": 308,
+   "alone_accuracy": 0.75
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": true,
+   "gold": "FALSE",
+   "claims": 140,
+   "alone_accuracy": 0.6571428571428571
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": true,
+   "gold": "all",
+   "claims": 448,
+   "alone_accuracy": 0.7209821428571429
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": false,
+   "gold": "TRUE",
+   "claims": 292,
+   "alone_accuracy": 0.8698630136986302
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": false,
+   "gold": "FALSE",
+   "claims": 460,
+   "alone_accuracy": 0.9521739130434783
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": false,
+   "gold": "all",
+   "claims": 752,
+   "alone_accuracy": 0.9202127659574468
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": true,
+   "gold": "TRUE",
+   "claims": 308,
+   "alone_accuracy": 0.7175324675324676
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": true,
+   "gold": "FALSE",
+   "claims": 140,
+   "alone_accuracy": 0.5642857142857143
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": true,
+   "gold": "all",
+   "claims": 448,
+   "alone_accuracy": 0.6696428571428571
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": false,
+   "gold": "TRUE",
+   "claims": 292,
+   "alone_accuracy": 0.863013698630137
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": false,
+   "gold": "FALSE",
+   "claims": 460,
+   "alone_accuracy": 0.8891304347826087
+  },
+  {
+   "dataset": "fever",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": false,
+   "gold": "all",
+   "claims": 752,
+   "alone_accuracy": 0.8789893617021277
+  },
+  {
+   "dataset": "fever",
+   "model": "gemma-4-31b-it-qat",
+   "validated": true,
+   "gold": "TRUE",
+   "claims": 308,
+   "alone_accuracy": 0.7402597402597403
+  },
+  {
+   "dataset": "fever",
+   "model": "gemma-4-31b-it-qat",
+   "validated": true,
+   "gold": "FALSE",
+   "claims": 140,
+   "alone_accuracy": 0.7
+  },
+  {
+   "dataset": "fever",
+   "model": "gemma-4-31b-it-qat",
+   "validated": true,
+   "gold": "all",
+   "claims": 448,
+   "alone_accuracy": 0.7276785714285714
+  },
+  {
+   "dataset": "fever",
+   "model": "gemma-4-31b-it-qat",
+   "validated": false,
+   "gold": "TRUE",
+   "claims": 292,
+   "alone_accuracy": 0.8698630136986302
+  },
+  {
+   "dataset": "fever",
+   "model": "gemma-4-31b-it-qat",
+   "validated": false,
+   "gold": "FALSE",
+   "claims": 460,
+   "alone_accuracy": 0.9347826086956522
+  },
+  {
+   "dataset": "fever",
+   "model": "gemma-4-31b-it-qat",
+   "validated": false,
+   "gold": "all",
+   "claims": 752,
+   "alone_accuracy": 0.9095744680851063
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": true,
+   "gold": "TRUE",
+   "claims": 295,
+   "alone_accuracy": 0.6915254237288135
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": true,
+   "gold": "FALSE",
+   "claims": 97,
+   "alone_accuracy": 0.7216494845360825
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": true,
+   "gold": "all",
+   "claims": 392,
+   "alone_accuracy": 0.6989795918367347
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": false,
+   "gold": "TRUE",
+   "claims": 161,
+   "alone_accuracy": 0.7701863354037267
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": false,
+   "gold": "FALSE",
+   "claims": 140,
+   "alone_accuracy": 0.9142857142857143
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen/qwen3.6-35b-a3b",
+   "validated": false,
+   "gold": "all",
+   "claims": 301,
+   "alone_accuracy": 0.8372093023255814
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": true,
+   "gold": "TRUE",
+   "claims": 295,
+   "alone_accuracy": 0.7288135593220338
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": true,
+   "gold": "FALSE",
+   "claims": 97,
+   "alone_accuracy": 0.6391752577319587
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": true,
+   "gold": "all",
+   "claims": 392,
+   "alone_accuracy": 0.7066326530612245
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": false,
+   "gold": "TRUE",
+   "claims": 161,
+   "alone_accuracy": 0.7701863354037267
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": false,
+   "gold": "FALSE",
+   "claims": 140,
+   "alone_accuracy": 0.8285714285714286
+  },
+  {
+   "dataset": "scifact",
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "validated": false,
+   "gold": "all",
+   "claims": 301,
+   "alone_accuracy": 0.7973421926910299
+  },
+  {
+   "dataset": "scifact",
+   "model": "gemma-4-31b-it-qat",
+   "validated": true,
+   "gold": "TRUE",
+   "claims": 295,
+   "alone_accuracy": 0.8779661016949153
+  },
+  {
+   "dataset": "scifact",
+   "model": "gemma-4-31b-it-qat",
+   "validated": true,
+   "gold": "FALSE",
+   "claims": 97,
+   "alone_accuracy": 0.4845360824742268
+  },
+  {
+   "dataset": "scifact",
+   "model": "gemma-4-31b-it-qat",
+   "validated": true,
+   "gold": "all",
+   "claims": 392,
+   "alone_accuracy": 0.7806122448979592
+  },
+  {
+   "dataset": "scifact",
+   "model": "gemma-4-31b-it-qat",
+   "validated": false,
+   "gold": "TRUE",
+   "claims": 161,
+   "alone_accuracy": 0.8509316770186336
+  },
+  {
+   "dataset": "scifact",
+   "model": "gemma-4-31b-it-qat",
+   "validated": false,
+   "gold": "FALSE",
+   "claims": 140,
+   "alone_accuracy": 0.8642857142857143
+  },
+  {
+   "dataset": "scifact",
+   "model": "gemma-4-31b-it-qat",
+   "validated": false,
+   "gold": "all",
+   "claims": 301,
+   "alone_accuracy": 0.8571428571428571
+  }
+ ]
+}

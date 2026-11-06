@@ -1,0 +1,78 @@
+{
+ "checked_at": "2026-11-06",
+ "method": "the model-file manifest (GGUF files) and shasum -a 256 on the Studio (judge files), after the last cell (03:00 PST)",
+ "all_match": true,
+ "voided_cells": [],
+ "files": [
+  {
+   "model": "gemma-4-31b-it-qat",
+   "path": "lmstudio-community/gemma-4-31B-it-QAT-GGUF/gemma-4-31B-it-QAT-Q4_0.gguf",
+   "pinned_sha256": "e664c3b437599d70eb7c470e66aaa938c0948c1851a9257f86a96306b94e8c18",
+   "end_sha256": "e664c3b437599d70eb7c470e66aaa938c0948c1851a9257f86a96306b94e8c18",
+   "match": true
+  },
+  {
+   "model": "gemma-4-31b-it-qat",
+   "path": "lmstudio-community/gemma-4-31B-it-QAT-GGUF/mmproj-gemma-4-31B-it-QAT-BF16.gguf",
+   "pinned_sha256": "25f056d3264782639e703c877d55cdda764658b1b08f045b533fd1a78cb1902f",
+   "end_sha256": "25f056d3264782639e703c877d55cdda764658b1b08f045b533fd1a78cb1902f",
+   "match": true
+  },
+  {
+   "model": "mistralai/mistral-small-3.2",
+   "path": "./model-00002-of-00003.safetensors",
+   "pinned_sha256": "d0d74815f82887ed10cf702ff61b91b17dc42628e2008878d504672d4d2b47dc",
+   "end_sha256": "d0d74815f82887ed10cf702ff61b91b17dc42628e2008878d504672d4d2b47dc",
+   "match": true
+  },
+  {
+   "model": "mistralai/mistral-small-3.2",
+   "path": "./model-00003-of-00003.safetensors",
+   "pinned_sha256": "56d9e23e0ef7ba7b7be871e60083fe50770737b288cf11503c85329777c93f31",
+   "end_sha256": "56d9e23e0ef7ba7b7be871e60083fe50770737b288cf11503c85329777c93f31",
+   "match": true
+  },
+  {
+   "model": "mistralai/mistral-small-3.2",
+   "path": "./tokenizer.json",
+   "pinned_sha256": "b76085f9923309d873994d444989f7eb6ec074b06f25b58f1e8d7b7741070949",
+   "end_sha256": "b76085f9923309d873994d444989f7eb6ec074b06f25b58f1e8d7b7741070949",
+   "match": true
+  },
+  {
+   "model": "mistralai/mistral-small-3.2",
+   "path": "./tekken.json",
+   "pinned_sha256": "6e2501687ccd0e1f30f36319eaf2b46958b897811e246cd8eb5d385b9e3de7d1",
+   "end_sha256": "6e2501687ccd0e1f30f36319eaf2b46958b897811e246cd8eb5d385b9e3de7d1",
+   "match": true
+  },
+  {
+   "model": "mistralai/mistral-small-3.2",
+   "path": "./model-00001-of-00003.safetensors",
+   "pinned_sha256": "271b2009bf595520d9a020378b6b29a53d00733e16968856c59cbebd626b57c5",
+   "end_sha256": "271b2009bf595520d9a020378b6b29a53d00733e16968856c59cbebd626b57c5",
+   "match": true
+  },
+  {
+   "model": "qwen/qwen3.6-35b-a3b",
+   "path": "lmstudio-community/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q4_K_M.gguf",
+   "pinned_sha256": "4ac6a06bce551257267f49ad2226f8671a22519ccc1a4dde9d5b433d1f2a410d",
+   "end_sha256": "4ac6a06bce551257267f49ad2226f8671a22519ccc1a4dde9d5b433d1f2a410d",
+   "match": true
+  },
+  {
+   "model": "qwen/qwen3.6-35b-a3b",
+   "path": "lmstudio-community/Qwen3.6-35B-A3B-GGUF/mmproj-Qwen3.6-35B-A3B-BF16.gguf",
+   "pinned_sha256": "e5c205cec2fd28f66c3895e4040021ab994b860323c3db8531640305ff49b322",
+   "end_sha256": "e5c205cec2fd28f66c3895e4040021ab994b860323c3db8531640305ff49b322",
+   "match": true
+  },
+  {
+   "model": "qwen3-coder-30b-a3b-instruct",
+   "path": "lmstudio-community/Qwen3-Coder-30B-A3B-Instruct-GGUF/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf",
+   "pinned_sha256": "79ad15a5ee3caddc3f4ff0db33a14454a5a3eb503d7fa1c1e35feafc579de486",
+   "end_sha256": "79ad15a5ee3caddc3f4ff0db33a14454a5a3eb503d7fa1c1e35feafc579de486",
+   "match": true
+  }
+ ]
+}

@@ -1,0 +1,388 @@
+{
+ "claims": 40,
+ "seed": 1,
+ "note": "pre-freeze feasibility on FEVER claims disjoint from the study frames; single seed; not part of the reported results; n_for_half_width_5pts ignores clustering and seed averaging",
+ "retrieval_hit_rate": 0.475,
+ "by_model": {
+  "qwen/qwen3.6-35b-a3b": {
+   "no_context": {
+    "alone": 0.675,
+    "false": 0.5,
+    "true": 0.825,
+    "false_text": 0.2,
+    "alone2": 0.65,
+    "drop": 0.17500000000000004,
+    "notes_drop": 0.47500000000000003,
+    "gain": 0.1499999999999999,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.65583
+   },
+   "retrieved": {
+    "alone": 0.825,
+    "false": 0.725,
+    "true": 0.825,
+    "false_text": 0.325,
+    "alone2": 0.825,
+    "drop": 0.09999999999999998,
+    "notes_drop": 0.49999999999999994,
+    "gain": 0.0,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.905965
+   },
+   "distractor_retrieved": {
+    "alone": 0.6,
+    "false": 0.425,
+    "true": 0.85,
+    "false_text": 0.075,
+    "drop": 0.175,
+    "notes_drop": 0.525,
+    "gain": 0.25,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 1.04494375
+   },
+   "gold": {
+    "alone": 0.875,
+    "false": 0.85,
+    "true": 0.9,
+    "false_text": 0.375,
+    "drop": 0.025000000000000022,
+    "notes_drop": 0.5,
+    "gain": 0.025000000000000022,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.8468125
+   },
+   "distractor_gold": {
+    "alone": 0.65,
+    "false": 0.425,
+    "true": 0.8,
+    "false_text": 0.15,
+    "drop": 0.22500000000000003,
+    "notes_drop": 0.5,
+    "gain": 0.15000000000000002,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.8340625
+   },
+   "instruction": {
+    "alone": 0.65,
+    "false": 0.325,
+    "true": 0.875,
+    "false_text": 0.2,
+    "drop": 0.325,
+    "notes_drop": 0.45,
+    "gain": 0.22499999999999998,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 2.3252625
+   }
+  },
+  "qwen3-coder-30b-a3b-instruct": {
+   "no_context": {
+    "alone": 0.65,
+    "false": 0.375,
+    "true": 0.875,
+    "false_text": 0.125,
+    "alone2": 0.65,
+    "drop": 0.275,
+    "notes_drop": 0.525,
+    "gain": 0.22499999999999998,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.44546
+   },
+   "retrieved": {
+    "alone": 0.775,
+    "false": 0.775,
+    "true": 0.825,
+    "false_text": 0.425,
+    "alone2": 0.775,
+    "drop": 0.0,
+    "notes_drop": 0.35000000000000003,
+    "gain": 0.04999999999999993,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.54673
+   },
+   "distractor_retrieved": {
+    "alone": 0.65,
+    "false": 0.55,
+    "true": 0.725,
+    "false_text": 0.225,
+    "drop": 0.09999999999999998,
+    "notes_drop": 0.42500000000000004,
+    "gain": 0.07499999999999996,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.6934625
+   },
+   "gold": {
+    "alone": 0.875,
+    "false": 0.85,
+    "true": 0.95,
+    "false_text": 0.425,
+    "drop": 0.025000000000000022,
+    "notes_drop": 0.45,
+    "gain": 0.07499999999999996,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.5014125
+   },
+   "distractor_gold": {
+    "alone": 0.675,
+    "false": 0.525,
+    "true": 0.775,
+    "false_text": 0.175,
+    "drop": 0.15000000000000002,
+    "notes_drop": 0.5,
+    "gain": 0.09999999999999998,
+    "parse_failure_rate": 0.00625,
+    "mean_latency_s": 0.55051875
+   },
+   "instruction": {
+    "alone": 0.625,
+    "false": 0.4,
+    "true": 0.85,
+    "false_text": 0.2,
+    "drop": 0.22499999999999998,
+    "notes_drop": 0.425,
+    "gain": 0.22499999999999998,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 0.59850625
+   }
+  },
+  "gemma-4-31b-it-qat": {
+   "no_context": {
+    "alone": 0.65,
+    "false": 0.525,
+    "true": 0.8,
+    "false_text": 0.175,
+    "alone2": 0.65,
+    "drop": 0.125,
+    "notes_drop": 0.47500000000000003,
+    "gain": 0.15000000000000002,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 3.536915
+   },
+   "retrieved": {
+    "alone": 0.725,
+    "false": 0.75,
+    "true": 0.725,
+    "false_text": 0.6,
+    "alone2": 0.725,
+    "drop": -0.025000000000000022,
+    "notes_drop": 0.125,
+    "gain": 0.0,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 9.22381
+   },
+   "distractor_retrieved": {
+    "alone": 0.45,
+    "false": 0.475,
+    "true": 0.475,
+    "false_text": 0.375,
+    "drop": -0.024999999999999967,
+    "notes_drop": 0.07500000000000001,
+    "gain": 0.024999999999999967,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 8.5538375
+   },
+   "gold": {
+    "alone": 0.875,
+    "false": 0.85,
+    "true": 0.825,
+    "false_text": 0.8,
+    "drop": 0.025000000000000022,
+    "notes_drop": 0.07499999999999996,
+    "gain": -0.050000000000000044,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 3.8847187499999998
+   },
+   "distractor_gold": {
+    "alone": 0.45,
+    "false": 0.475,
+    "true": 0.475,
+    "false_text": 0.325,
+    "drop": -0.024999999999999967,
+    "notes_drop": 0.125,
+    "gain": 0.024999999999999967,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 3.92810625
+   },
+   "instruction": {
+    "alone": 0.625,
+    "false": 0.55,
+    "true": 0.8,
+    "false_text": 0.35,
+    "drop": 0.07499999999999996,
+    "notes_drop": 0.275,
+    "gain": 0.17500000000000004,
+    "parse_failure_rate": 0.0,
+    "mean_latency_s": 2.66551875
+   }
+  }
+ },
+ "contrasts": {
+  "notes:C1:pooled": {
+   "estimate": 0.16666666666666666,
+   "sd": 0.39942979301018544,
+   "n_for_half_width_5pts": 246,
+   "se_now": 0.06315539556208946,
+   "claims": 40
+  },
+  "notes:C1:qwen/qwen3.6-35b-a3b": {
+   "estimate": -0.025,
+   "sd": 0.6597396533909495,
+   "n_for_half_width_5pts": 669,
+   "se_now": 0.10431399837227147,
+   "claims": 40
+  },
+  "notes:C1:qwen3-coder-30b-a3b-instruct": {
+   "estimate": 0.175,
+   "sd": 0.5943106327545623,
+   "n_for_half_width_5pts": 543,
+   "se_now": 0.09396876185801431,
+   "claims": 40
+  },
+  "notes:C1:gemma-4-31b-it-qat": {
+   "estimate": 0.35,
+   "sd": 0.6222374845503019,
+   "n_for_half_width_5pts": 595,
+   "se_now": 0.09838438483563934,
+   "claims": 40
+  },
+  "notes:C2:pooled": {
+   "estimate": 0.016666666666666666,
+   "sd": 0.4462569877831597,
+   "n_for_half_width_5pts": 307,
+   "se_now": 0.07055942515803595,
+   "claims": 40
+  },
+  "notes:C2:qwen/qwen3.6-35b-a3b": {
+   "estimate": 0.025,
+   "sd": 0.6196566460342041,
+   "n_for_half_width_5pts": 591,
+   "se_now": 0.09797631843644143,
+   "claims": 40
+  },
+  "notes:C2:qwen3-coder-30b-a3b-instruct": {
+   "estimate": 0.075,
+   "sd": 0.7298577311314224,
+   "n_for_half_width_5pts": 819,
+   "se_now": 0.11540063991290382,
+   "claims": 40
+  },
+  "notes:C2:gemma-4-31b-it-qat": {
+   "estimate": -0.05,
+   "sd": 0.5038314736557788,
+   "n_for_half_width_5pts": 391,
+   "se_now": 0.07966275068156914,
+   "claims": 40
+  },
+  "notes:C3:pooled": {
+   "estimate": 0.026315789473684188,
+   "sd": 0.34118305872914373,
+   "n_for_half_width_5pts": 179,
+   "se_now": 0.05534720065278212,
+   "claims": 38
+  },
+  "notes:C3:qwen/qwen3.6-35b-a3b": {
+   "estimate": 0.0,
+   "sd": 0.5694947974514994,
+   "n_for_half_width_5pts": 499,
+   "se_now": 0.09238425536915801,
+   "claims": 38
+  },
+  "notes:C3:qwen3-coder-30b-a3b-instruct": {
+   "estimate": 0.05263157894736842,
+   "sd": 0.655429235096407,
+   "n_for_half_width_5pts": 661,
+   "se_now": 0.10632466196798782,
+   "claims": 38
+  },
+  "notes:C3:gemma-4-31b-it-qat": {
+   "estimate": 0.02631578947368421,
+   "sd": 0.2834957557490734,
+   "n_for_half_width_5pts": 124,
+   "se_now": 0.04598908438215423,
+   "claims": 38
+  },
+  "peers:C1:pooled": {
+   "estimate": 0.16666666666666666,
+   "sd": 0.4202834479707435,
+   "n_for_half_width_5pts": 272,
+   "se_now": 0.06645264792282107,
+   "claims": 40
+  },
+  "peers:C1:qwen/qwen3.6-35b-a3b": {
+   "estimate": 0.075,
+   "sd": 0.6155047959570695,
+   "n_for_half_width_5pts": 583,
+   "se_now": 0.09731985329907687,
+   "claims": 40
+  },
+  "peers:C1:qwen3-coder-30b-a3b-instruct": {
+   "estimate": 0.275,
+   "sd": 0.5541220822628188,
+   "n_for_half_width_5pts": 472,
+   "se_now": 0.08761439408728483,
+   "claims": 40
+  },
+  "peers:C1:gemma-4-31b-it-qat": {
+   "estimate": 0.15,
+   "sd": 0.533493565673837,
+   "n_for_half_width_5pts": 438,
+   "se_now": 0.08435273922869733,
+   "claims": 40
+  },
+  "peers:C2:pooled": {
+   "estimate": 0.058333333333333334,
+   "sd": 0.2709853288151379,
+   "n_for_half_width_5pts": 113,
+   "se_now": 0.04284654257727466,
+   "claims": 40
+  },
+  "peers:C2:qwen/qwen3.6-35b-a3b": {
+   "estimate": 0.075,
+   "sd": 0.5723321610429581,
+   "n_for_half_width_5pts": 504,
+   "se_now": 0.09049366035310188,
+   "claims": 40
+  },
+  "peers:C2:qwen3-coder-30b-a3b-instruct": {
+   "estimate": 0.1,
+   "sd": 0.37893237337253677,
+   "n_for_half_width_5pts": 221,
+   "se_now": 0.059914468951527806,
+   "claims": 40
+  },
+  "peers:C2:gemma-4-31b-it-qat": {
+   "estimate": 0.0,
+   "sd": 0.32025630761017426,
+   "n_for_half_width_5pts": 158,
+   "se_now": 0.050636968354183326,
+   "claims": 40
+  },
+  "peers:C3:pooled": {
+   "estimate": 0.07894736842105264,
+   "sd": 0.2250686985721731,
+   "n_for_half_width_5pts": 78,
+   "se_now": 0.03651096413442915,
+   "claims": 38
+  },
+  "peers:C3:qwen/qwen3.6-35b-a3b": {
+   "estimate": 0.21052631578947367,
+   "sd": 0.4740791778345997,
+   "n_for_half_width_5pts": 346,
+   "se_now": 0.07690579795683226,
+   "claims": 38
+  },
+  "peers:C3:qwen3-coder-30b-a3b-instruct": {
+   "estimate": 0.10526315789473684,
+   "sd": 0.3883070451442738,
+   "n_for_half_width_5pts": 232,
+   "se_now": 0.06299172069839126,
+   "claims": 38
+  },
+  "peers:C3:gemma-4-31b-it-qat": {
+   "estimate": -0.07894736842105263,
+   "sd": 0.35879520224642053,
+   "n_for_half_width_5pts": 198,
+   "se_now": 0.05820426760331371,
+   "claims": 38
+  }
+ }
+}
