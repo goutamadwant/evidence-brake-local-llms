@@ -215,6 +215,32 @@ def bootstrap(series: dict[str, float], frames: dict, seed: int, cluster_key: st
     return {"estimate": estimate, "ci_low": low, "ci_high": high, "familywise_high": familywise_high, "p_value": min(1.0, 2 * (tail + 1) / (RESAMPLES + 1)), "n": len(series), "clusters": n_keys}
 
 
+def balanced_bootstrap(series: dict[str, float], frames: dict, seed: int) -> dict:
+    """Cluster bootstrap for the mean that weights TRUE and FALSE claims equally: (mean over TRUE + mean over FALSE) / 2."""
+    clusters: dict[str, list[float]] = defaultdict(lambda: [0.0, 0, 0.0, 0])
+    for item, value in series.items():
+        c = clusters[frames[item]["cluster"]]
+        k = 0 if frames[item]["gold"] == "TRUE" else 2
+        c[k] += value
+        c[k + 1] += 1
+    keys = sorted(clusters)
+    cells = [clusters[k] for k in keys]
+    rng = random.Random(seed)
+    stats = []
+    for _ in range(RESAMPLES):
+        st, nt, sf, nf = 0.0, 0, 0.0, 0
+        for _ in range(len(keys)):
+            a, b, c, d = cells[rng.randrange(len(keys))]
+            st, nt, sf, nf = st + a, nt + b, sf + c, nf + d
+        if nt and nf:
+            stats.append((st / nt + sf / nf) / 2)
+    stats.sort()
+    true = [v for i, v in series.items() if frames[i]["gold"] == "TRUE"]
+    false = [v for i, v in series.items() if frames[i]["gold"] == "FALSE"]
+    return {"estimate": (sum(true) / len(true) + sum(false) / len(false)) / 2, "ci_low": stats[int(0.025 * len(stats))],
+            "ci_high": stats[int(0.975 * len(stats)) - 1], "n": len(series), "clusters": len(keys)}
+
+
 def holm(rows: list[dict]) -> None:
     ordered = sorted(rows, key=lambda r: r["p_value"])
     running = 0.0
@@ -497,6 +523,10 @@ def analyse(registry: Path, frames_dir: Path, kinds: set[str], models: list[str]
                 gap = {i: series[i] - c3[i] for i in series if i in c3}
                 posthoc.append({"id": f"{channel}-C3_oneword-parsedset-{dataset}", "channel": channel, "contrast": "C3_oneword_parsedset", "dataset": dataset, "models": "pooled", **bootstrap(same, frames[dataset], 20273110 + 10 * offset)})
                 posthoc.append({"id": f"{channel}-C3_reasoned-parsed-gap-{dataset}", "channel": channel, "contrast": "C3_reasoned_parsed_gap", "dataset": dataset, "models": "pooled", **bootstrap(gap, frames[dataset], 20273120 + 10 * offset)})
+            # C2 and C3 with TRUE and FALSE claims weighted equally, with a cluster-bootstrap interval
+            for name, series in contrast_series(data, dataset, models, arm).items():
+                if name in ("C2", "C3") and series:
+                    posthoc.append({"id": f"{channel}-{name}-balanced-{dataset}", "channel": channel, "contrast": f"{name}_balanced", "dataset": dataset, "models": "pooled", **balanced_bootstrap(series, frames[dataset], 20273500 + int(name[1]) + 10 * offset)})
             # FALSE-claim content rows without the rationale writer, and on merged clusters
             for name in ("C2", "C3"):
                 for label in ("FALSE", "TRUE"):
@@ -790,13 +820,8 @@ def write_outputs(result: dict, registry: Path, datasets: list[str], frames_dir:
         L = letters[dataset]
         macros += [macro(f"BenCommon{L}Ret", c["rate_retrieved"], pct=True), macro(f"BenCommon{L}Dist", c["rate_distractor"], pct=True), macro(f"BenCommon{L}N", c["claims"]),
                    macro(f"BenCommon{L}DiffEst", c["difference"]["estimate"], pct=True), macro(f"BenCommon{L}DiffLow", c["difference"]["ci_low"], pct=True), macro(f"BenCommon{L}DiffHigh", c["difference"]["ci_high"], pct=True)]
-    pooled_rows = {(r["channel"], r["contrast"], r["dataset"]): r for r in result["secondary"] if r["models"] == "pooled"}
-    for (channel, contrast, dataset), r in list(pooled_rows.items()):
-        if contrast in ("C2_TRUE", "C3_TRUE") and (channel, contrast.replace("TRUE", "FALSE"), dataset) in pooled_rows:
-            other = pooled_rows[(channel, contrast.replace("TRUE", "FALSE"), dataset)]
-            key = {"notes": "Notes", "peers": "Peers"}[channel] + {"C2": "RetDist", "C3": "GoldDist"}[contrast[:2]] + "Balanced" + letters[dataset]
-            macros.append(macro(key + "Est", (r["estimate"] + other["estimate"]) / 2, pct=True))  # equal weight to the two labels, post hoc
     posthoc_keys = {"C1_nonwriter": "RetNoWriter", "C2_nonwriter": "RetDistNoWriter", "C3_nonwriter": "GoldDistNoWriter", "C3_reasoned_parsed": "GoldDistReasonedParsed",
+                    "C2_balanced": "RetDistBalanced", "C3_balanced": "GoldDistBalanced",
                     "C3_oneword_parsedset": "GoldDistOneWordParsed", "C3_reasoned_parsed_gap": "ReasonedParsedGap", "C3_first_controlset": "GoldDistFirstControl",
                     **{f"{c}_{lab}_{kind}": {"C2": "RetDist", "C3": "GoldDist"}[c] + lab.title() + {"nonwriter": "NoWriter", "merged": "Merged"}[kind]
                        for c in ("C2", "C3") for lab in ("FALSE", "TRUE") for kind in ("nonwriter", "merged")}}
